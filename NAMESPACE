@@ -1,0 +1,16 @@
+# Imported functions
+importFrom("nlme", lme)
+
+
+exportPattern("^[[:alpha:]]+")
+export(plot.Explore.WS.Corr, plot.WS.Corr.Mixed, plot.WS.Corr.Mixed.SAS, summary.Explore.WS.Corr, summary.Fract.Poly, 
+summary.WS.Corr.Mixed, summary.WS.Corr.Mixed.SAS)
+
+S3method(plot, Explore.WS.Corr)
+S3method(plot, WS.Corr.Mixed)
+S3method(plot, WS.Corr.Mixed.SAS)
+
+S3method(summary, Explore.WS.Corr)
+S3method(summary, Fract.Poly)
+S3method(summary, WS.Corr.Mixed)
+S3method(summary, WS.Corr.Mixed.SAS)
