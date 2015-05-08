@@ -1,4 +1,4 @@
-WS.Corr.Mixed.SAS <- function(Model, D, Sigma2, Asycov, Rho, Tau2, Alpha=0.05, Max.Time){
+WS.Corr.Mixed.SAS <- function(Model, D, Sigma2, Asycov, Rho, Tau2, Alpha=0.05, Time){
 
   if (missing(Rho)) {Rho <- NULL}
   if (missing(Tau2)) {Tau2 <- NULL}
@@ -7,7 +7,7 @@ WS.Corr.Mixed.SAS <- function(Model, D, Sigma2, Asycov, Rho, Tau2, Alpha=0.05, M
   
 if (Model == "Model 1"){
 d <- D
-R <- rep(d / (d + Sigma2), times=Max.Time)
+R <- rep(d / (d + Sigma2), times=length(Time))
 S <- Sigma2 
 R_hier <- R
 der_d <- S/((d+S)**2)
@@ -23,7 +23,7 @@ CI.Lower <- (exp(2*low)-1)/(exp(2*low)+1)
 }
 
 if (Model == "Model 2"){
-u <- 1:Max.Time; d <- D
+u <- Time; d <- D
 tau2 <- T <- Tau2; rho <- Rho; S <- sigma2 <- Sigma2
 R <- (d + tau2 * exp((-u**2) / (rho**2)))/
   (d + tau2 + sigma2)
@@ -31,7 +31,7 @@ R <- (d + tau2 * exp((-u**2) / (rho**2)))/
 CI.Lower <- CI.Upper <- NULL
 for (i in 1: length(R)){
   R_hier <- R[i]
-  u <- (1:Max.Time)[i]**2
+  u <- Time[i]**2
   der_rho <- (T * exp(-u**2 / rho**2))/(d+T+S) * ((2 * (u**2))/rho**3)
   der_S <- -(d + (T * exp(-u**2 / rho**2)))/((d+T+S)**2)
   der_d <- (((1 - exp(-u**2 / rho**2))* T)+S)/((d+T+S)**2)
@@ -59,7 +59,7 @@ if (Model == "Model 3"){
   tau2 <- Tau2
   
   # corrs 
-  Time <- 1:(max(Max.Time)+1) #LS
+  Time <- Time #LS
   all_cols <- NULL
   for (i in 1: max(Time)){
     t1 <- Time[i]
@@ -91,14 +91,12 @@ if (Model == "Model 3"){
     rm(erbij)
   } 
   
-#  Pred.Model3.Loess <- unique(lowess(x = alles[,1], y=alles[,2], f = .7)$y)
-  
 }
 
 
 fit <- 
   list(Model=Model, R=R, Alpha=Alpha, CI.Upper=CI.Upper, CI.Lower=CI.Lower, 
-       Max.Time=Max.Time, Call=match.call())   
+       Time=Time, Call=match.call())   
 
 class(fit) <- "WS.Corr.Mixed.SAS"
 fit

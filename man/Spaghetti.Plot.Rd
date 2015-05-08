@@ -6,7 +6,7 @@ Makes a spaghetti plot, i.e., a plot that depicts the outcome as a function of t
 }
 \usage{
 Spaghetti.Plot(Dataset, Outcome, Time, Id, Add.Profiles=TRUE, Add.Mean=TRUE, 
-Add.Median=FALSE, Col=8, Lwd.Me=3, ...)
+Add.Median=FALSE, Col=8, Lwd.Me=3, xlim, ylim, ...)
 }
 \arguments{
   \item{Dataset}{A \code{data.frame} that should consist of multiple lines per subject ('long' format).}
@@ -18,10 +18,12 @@ Add.Median=FALSE, Col=8, Lwd.Me=3, ...)
   \item{Add.Median}{Logical. Should a line that depicts the medean as a function of time be added? Default \code{Add.Mean=FALSE}.}
   \item{Col}{The color of the individual profiles. Default \code{Col=8} (grey).}
   \item{Lwd.Me}{The line width of the lines with mean and/or median. Default \code{Lwd.Me=3}.}
+  \item{xlim}{The (min, max) values for the x-axis.}
+  \item{ylim}{The (min, max) values for the y-axis.}
   \item{...}{Other arguments to be passed to the \code{plot()} function.}
 }
 \references{
-Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Correlation in continuous monitoring of vital parameters I - estimating reliability using linear mixed-effects models. \emph{Submitted.}
+Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Correlation in continuous monitoring of vital parameters - estimating reliability using linear mixed-effects models. \emph{Submitted.}
 }
 \author{
 Wim Van der Elst, Geert Molenberghs, Ralf-Dieter Hilgers, & Nicole Heussen

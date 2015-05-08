@@ -21,6 +21,8 @@ Fract.Poly <- function(Covariate, Outcome,
   cat("a more restricted set S or a lower Max.M \n\n", sep= "") }
   }
   
+Covariate[Covariate==0] <- 0.00000001
+  
 #m1  
 if (Max.M>=1){
 Results_m1 <- NULL

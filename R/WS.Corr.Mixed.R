@@ -1,8 +1,9 @@
 WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=" ", 
-                    Id, Model=1, Max.Time="All", 
-                    Number.Bootstrap=100, Alpha=.05, Seed=1){
+                    Id, Time = Time, Model=1, Number.Bootstrap=100, Alpha=.05, Seed=1){
 
-  if (Max.Time=="All") {Max.Time <- max(table(Dataset[,Id]))}
+  Time <- Dataset[,paste(substitute(Time))]
+  
+  Max.Time <- length(unique(Time))
   
   CI.Upper.Loess <- CI.Lower.Loess <- Pred.Model3.Loess.Boot_all <- NULL
   Pred.Model3.Loess=NULL
@@ -15,7 +16,7 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
     Model = "Model 1, Random intercept"
     Tau2=NULL
     Rho=NULL
-    model <- lme(fixed = Fixed.Part, random = Random.Part, data = Dataset)
+    model <- lme(fixed = Fixed.Part, random = Random.Part, data = Dataset, na.action = na.omit)
     Coef.Fixed <- model$coefficients$fixed
     Std.Error.Fixed <- sqrt(diag(model$varFix))
     
@@ -24,8 +25,7 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
     AIC <- summary(model)$AIC
     LogLik <- summary(model)$logLik
     
-    # corrs als functie van time lag manueel berekenen
-    u <- 1:Max.Time
+    u <- unique(Time)
     R <- rep(d / (d + Sigma2), times=Max.Time)
     
     if (Number.Bootstrap>0){
@@ -52,13 +52,13 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
          sample.boot[, 1: (dim(sample.boot)[2])]   
        
        try(model_hier <- lme(fixed = Fixed.Part, random = (~1 | unit), 
-                             data = sample.boot), silent=TRUE)
+                             data = sample.boot, na.action = na.omit), silent=TRUE)
        
        if (exists("model_hier")==TRUE){
          d_hier <- nlme::getVarCov(model_hier)[1]
          Sigma2_hier <- as.numeric(model_hier[6])**2
          
-         u <- 1:Max.Time
+         u <- unique(Time)
          R_hier <- rep(d_hier / (d_hier + Sigma2_hier), times=Max.Time)
          
          all_boot_R <- rbind(all_boot_R, R_hier)
@@ -87,8 +87,8 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
   
   Model = "Model 2, Random intercept + serial corr (Gaussian)"
       
-  model <- lme(fixed = Fixed.Part, random = Random.Part, correlation = Correlation, 
-               data = Dataset)
+  model <- 
+    lme(fixed = Fixed.Part, random = Random.Part, correlation = Correlation, data = Dataset, na.action = na.omit)
 
   Coef.Fixed <- model$coefficients$fixed
   Std.Error.Fixed <- sqrt(diag(model$varFix))
@@ -111,7 +111,7 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
   LogLik <- summary(model)$logLik
   
   # corrs als functie van time lag manueel berekenen
-  u <- 1:Max.Time
+  u <- unique(Time)
   R <- (d + tau2 * exp((-u**2) / (rho**2)))/
     (d + tau2 + sigma2)
   
@@ -143,7 +143,7 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
   
   try(model_hier <- lme(fixed = Fixed.Part, random = (~1 | unit), 
                         correlation = Correlation, 
-                        data = sample.boot), silent=TRUE)
+                        data = sample.boot, na.action = na.omit), silent=TRUE)
   
   if (exists("model_hier")==TRUE){
     serial_hier <- (coef(model_hier$modelStruct$corStruct, unconstrained=FALSE))
@@ -154,7 +154,7 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
     residual_var_hier <- as.numeric(summary(model_hier)[6]) **2   # sigma**2 + tau**2
     tau2_hier <- residual_var_hier/ ((nugget_hier/(1-nugget_hier))+1)
     sigma2_hier <- (nugget_hier/(1-nugget_hier)) * tau2_hier
-    u <- 1:Max.Time
+    u <- unique(Time)
     R_hier <- (d_hier + tau2_hier * exp((-u**2) / (rho_hier**2)))/
       (d_hier + tau2_hier + sigma2_hier)
     
@@ -185,10 +185,11 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
   
   
   if (Model == 3){ 
+
     Model = "Model 3, Random intercept, slope + serial corr (Gaussian)"
     
     model <- lme(fixed = Fixed.Part, random = Random.Part, correlation = Correlation, 
-                 data = Dataset)
+                 data = Dataset, na.action = na.omit)
     Coef.Fixed <- model$coefficients$fixed
     Std.Error.Fixed <- sqrt(diag(model$varFix))
         
@@ -209,13 +210,13 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
     LogLik <- summary(model)$logLik
     
     # corrs 
-    Time <- 1:(max(Max.Time)+1) #LS
+    Time <- unique(Time) #LS
     all_cols <- NULL
-    for (i in 1: max(Time)){
+    for (i in 1: length(Time)){
       t1 <- Time[i]
       R_all <- NULL
       
-      for (j in 1: max(Time)){
+      for (j in 1: length(Time)){
         t2 <- Time[j]
         u <- t2 - t1
         z_s <- matrix(data = c(1, t1), nrow = 1)
@@ -233,8 +234,9 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
 
   Correlatie_matrix <- 
     matrix(Correlatie_matrix, nrow = dim(Correlatie_matrix)[1])
+
   alles <- NULL
-  for (i in 1: max(Time-1)){
+  for (i in 1: length(Time)-1){
     cor_hier <- Correlatie_matrix[row(Correlatie_matrix) == (col(Correlatie_matrix) - i)]
     erbij <- cbind(i, cor_hier)    
     alles <- rbind(alles, erbij)
@@ -272,7 +274,7 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
     
     try(model_hier <- lme(fixed = Fixed.Part, random = formula(paste(p_1, p_2)), 
                           correlation = Correlation, 
-                          data = sample.boot), silent=TRUE)
+                          data = sample.boot, na.action = na.omit), silent=TRUE)
     
     if (exists("model_hier")==TRUE){
       
@@ -290,13 +292,13 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
       rho_hier <- rho_hier
       Sigma2_var_hier <- sigma2_var_hier
       
-      Time <- 1:(max(Max.Time)+1) #LS
+      #Time <- 1:(max(Max.Time)+1) #LS
       all_cols <- NULL
-      for (im in 1: max(Time)){
+      for (im in 1: length(Time)){
         t1 <- Time[im]
         R_all <- NULL
         
-        for (j in 1: max(Time)){
+        for (j in 1: length(Time)){
           t2 <- Time[j]
           u <- t2 - t1
           z_s <- matrix(data = c(1, t1), nrow = 1)
@@ -331,8 +333,8 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
       }
       upper <- quantile(r_rowcol, probs = c(1-(Alpha/2)), na.rm = T)
       lower <- quantile(r_rowcol, probs = c(Alpha/2), na.rm = T)
-      all_upper[m,k] <- upper
-      all_lower[m,k] <- lower
+      try(all_upper[m,k] <- upper, silent=TRUE)
+      try(all_lower[m,k] <- lower, silent=TRUE)
     }
   }
   
@@ -350,7 +352,7 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
     list(Model=Model, D=D, Tau2=Tau2, Rho=Rho, Sigma2=Sigma2, AIC=AIC, LogLik=LogLik, 
          R=R, CI.Upper=CI.Upper, CI.Lower=CI.Lower, Alpha=Alpha, 
          Coef.Fixed=Coef.Fixed, Std.Error.Fixed=Std.Error.Fixed,
-         Call=match.call())   
+         Time=unique(Time), Call=match.call())   
   
   class(fit) <- "WS.Corr.Mixed"
   fit

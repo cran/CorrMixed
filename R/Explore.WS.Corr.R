@@ -1,10 +1,8 @@
-Explore.WS.Corr <- function(OLS.Model=" ", Dataset, Id, Time, Max.Time="All", Alpha=0.05, 
+Explore.WS.Corr <- function(OLS.Model=" ", Dataset, Id, Time, Alpha=0.05, 
                             Smoother.Span=.2, Number.Bootstrap=100, Seed=1){
   
   F_val <- Smoother.Span  
-  min_2_vals <- max(as.numeric(names((table(Dataset[,Time])[table(Dataset[,Time])>=2]))))
-  
-  if (Max.Time=="All") {Max.Time <- min_2_vals - 1}
+  Max.Time <- length(unique(Dataset[,Time]))
   
   options(warn=-1)
   
@@ -32,8 +30,6 @@ Explore.WS.Corr <- function(OLS.Model=" ", Dataset, Id, Time, Max.Time="All", Al
   
   Est.Corr <- na.exclude(unique(lowess(x = alles[,1], y=alles[,2], f=F_val)$y))
   
-  
-  
   ### Bootstrap CI
   all_y <- Est.Corr
   Dataset <- cbind(Dataset, Dataset[, Id]) 
@@ -55,9 +51,6 @@ Explore.WS.Corr <- function(OLS.Model=" ", Dataset, Id, Time, Max.Time="All", Al
       sample.boot <- rbind(sample.boot, samen) 
     }
     
-    min_2_vals <- 
-      max(as.numeric(names((table(sample.boot[,Time])[table(sample.boot[,Time])>=2]))))
-    
     Res_hier <-  lm(formula = OLS.Model, data=sample.boot)$residuals
     
     Dataset.Short <-
@@ -68,7 +61,7 @@ Explore.WS.Corr <- function(OLS.Model=" ", Dataset, Id, Time, Max.Time="All", Al
     Data_Wide <- reshape(data = Dataset.Short, timevar= "Time", 
                          idvar= "Unit", direction="wide")
     
-    cor <- cor(Data_Wide[,2: (min_2_vals-1)], use = "pairwise.complete.obs")
+    cor <- cor(Data_Wide[,2: dim(Data_Wide)[2]], use = "pairwise.complete.obs")
     cor <- matrix(cor, nrow = nrow(cor))
     
     alles <- NULL
@@ -92,7 +85,6 @@ Explore.WS.Corr <- function(OLS.Model=" ", Dataset, Id, Time, Max.Time="All", Al
   
   all_y <- all_y[2: dim(all_y)[1],]
   all_y <- (matrix(data = all_y, nrow=nrow(all_y)))
-  
   
   ci <- NULL
   for (i in 1: dim(all_y)[2]){

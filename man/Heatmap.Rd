@@ -16,7 +16,7 @@ Heatmap(Dataset, Id, Outcome, Time, ...)
   \item{...}{Other arguments to be passed to \code{cor.plot}.}
 }
 \references{
-Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Correlation in continuous monitoring of vital parameters I - estimating reliability using linear mixed-effects models. \emph{Submitted.}
+Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Correlation in continuous monitoring of vital parameters - estimating reliability using linear mixed-effects models. \emph{Submitted.}
 }
 \author{
 Wim Van der Elst, Geert Molenberghs, Ralf-Dieter Hilgers, & Nicole Heussen

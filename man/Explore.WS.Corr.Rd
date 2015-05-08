@@ -8,7 +8,7 @@ This function allows for exploring the  within-subject (test-retest) correlation
 }
 \usage{
 Explore.WS.Corr(OLS.Model=" ", Dataset, Id, Time, 
-Max.Time="All", Alpha=0.05, Smoother.Span=.2, Number.Bootstrap=100, 
+Alpha=0.05, Smoother.Span=.2, Number.Bootstrap=100, 
 Seed=1)
 }
 \arguments{
@@ -18,7 +18,6 @@ Seed=1)
   \item{Dataset}{A \code{data.frame} that should consist of multiple lines per subject ('long' format).}
   \item{Id}{The subject indicator.}
   \item{Time}{The time indicator. Should be coded as \eqn{1}, \eqn{2}, etc.}
-  \item{Max.Time}{The maximum time that should be considered. When there are e.g., \eqn{40} repeated measures in the dataset but interest is limited to e.g., the first \eqn{20} observations (time lags \eqn{1}--\eqn{19}), the argument \code{Max.Time=20} can be used.}  
 \item{Alpha}{The \eqn{\alpha}-level to be used in the non-parametric bootstrap-based Confidence Interval for \eqn{R}. Default \code{Alpha=0.05}} 
 \item{Smoother.Span}{A smoothing (loess) technique is used to estimate \eqn{R} as a function of time lag. The smoother span gives the proportion of points in the plot which influence the smooth at each value. Larger values give more smoothness. For details, see \url{https://stat.ethz.ch/R-manual/R-patched/library/stats/html/lowess.html}. Defauls \code{Smoother.Span=.2}.}
 \item{Number.Bootstrap}{The number of non-parametric bootstrap samples to be used to estimate the Confidence Interval for \eqn{R}. Default \code{Number.Bootstrap=100}} 
@@ -33,7 +32,7 @@ Seed=1)
 \item{CI.Lower}{The lower bounds of the confidence intervals.}
 }
 \references{
-Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Correlation in continuous monitoring of vital parameters I - estimating reliability using linear mixed-effects models. \emph{Submitted.}
+Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Correlation in continuous monitoring of vital parameters - estimating reliability using linear mixed-effects models. \emph{Submitted.}
 }
 \author{
 Wim Van der Elst, Geert Molenberghs, Ralf-Dieter Hilgers, & Nicole Heussen
@@ -48,7 +47,7 @@ data(Example.Data)
 # Explore correlation structure
 Expl_Corr <- Explore.WS.Corr(OLS.Model="Outcome~as.factor(Time)+ 
   as.factor(Cycle) + as.factor(Condition)", Dataset=Example.Data, 
-  Id="Id", Time="Time", Max.Time=40, Alpha=.05, Number.Bootstrap=50, Seed=123)
+  Id="Id", Time="Time", Alpha=.05, Number.Bootstrap=50, Seed=123)
 
 # explore results
 summary(Expl_Corr)

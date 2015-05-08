@@ -28,7 +28,7 @@ ylim=c(-1, 1), xlab="Time Lag", ylab="Reliability", ...)
   \item{...}{Other arguments to be passed to the plot function.}
 }
 \references{
-Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Correlation in continuous monitoring of vital parameters I - estimating reliability using linear mixed-effects models. \emph{Submitted.}
+Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Correlation in continuous monitoring of vital parameters - estimating reliability using linear mixed-effects models. \emph{Submitted.}
 }
 \author{
 Wim Van der Elst, Geert Molenberghs, Ralf-Dieter Hilgers, & Nicole Heussen
@@ -43,7 +43,7 @@ data(Example.Data)
 # Explore correlation structure
 Expl_Corr <- Explore.WS.Corr(OLS.Model="Outcome~as.factor(Time)+ 
   as.factor(Cycle) + as.factor(Condition)", Dataset=Example.Data, 
-  Id="Id", Time="Time", Max.Time=40, Alpha=.05, Number.Bootstrap=50, Seed=123)
+  Id="Id", Time="Time", Alpha=.05, Number.Bootstrap=50, Seed=123)
 
 # explore results
 summary(Expl_Corr)

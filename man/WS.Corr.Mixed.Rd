@@ -7,7 +7,7 @@ Estimate within-subject correlations (reliabilities) based on a mixed-effects mo
 This function allows for the estimation of the within-subject correlations using a general and flexible modeling approach that allows at the same time to capture hierarchies in the data, the presence of covariates, and the derivation of correlation estimates. Non-parametric bootstrap-based confidence intervals can be requested. }
 \usage{
 WS.Corr.Mixed(Dataset, Fixed.Part=" ", Random.Part=" ", 
-Correlation=" ", Id, Model=1, Max.Time="All", 
+Correlation=" ", Id, Time=Time, Model=1, 
 Number.Bootstrap=100, Alpha=.05, Seed=1)
 }
 \arguments{
@@ -16,8 +16,8 @@ Number.Bootstrap=100, Alpha=.05, Seed=1)
   \item{Random.Part}{The random-effect part of the mixed-effects model to be fitted (specified in line with the \code{lme} function requirements). See \bold{examples} below.}
   \item{Correlation}{An optional object describing the within-group correlation structure (specified in line with the \code{lme} function requirements). See \bold{examples} below.} 
   \item{Id}{The subject indicator.}
+  \item{Time}{The time indicator. Default \code{Time=Time}.}
   \item{Model}{The type of model that should be fitted. \code{Model=1}: random intercept model, \code{Model=2}: random intercept and Gaussian serial correlation, and \code{Model=3}: random intercept,  slope, and Gaussian serial correlation. Default \code{Model=1}.}
-   \item{Max.Time}{The maximum time moment for which the estimated correlations should be provided. Note that the computations are based on all data provided in the dataset, \code{Max.Time} only restricts the output (not the actual data on which the computations are conducted).}
    \item{Number.Bootstrap}{The number of bootstrap samples to be used to estimate the Confidence Intervals around \eqn{R}.  Default \code{Number.Bootstrap=100}. As an alternative to obtain confidence intervals, the Delta method can be used (see \link{WS.Corr.Mixed.SAS}). }
    \item{Alpha}{The \eqn{\alpha}-level to be used in the bootstrap-based Confidence Interval for \eqn{R}. Default \eqn{Alpha=0.05}} 
 \item{Seed}{The seed to be used in the bootstrap. Default \eqn{Seed=1}.}
@@ -56,9 +56,10 @@ not like e.g.,
 \item{Alpha}{The \eqn{\alpha} level used in the estimation of the confidence interval.}
 \item{Coef.Fixed}{The estimated fixed-effect parameters.}
 \item{Std.Error.Fixed}{The standard errors of the fixed-effect parameters.}
+\item{Time}{The time values in the dataset.}
 }
 \references{
-Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Correlation in continuous monitoring of vital parameters I - estimating reliability using linear mixed-effects models. \emph{Submitted.}
+Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Correlation in continuous monitoring of vital parameters - estimating reliability using linear mixed-effects models. \emph{Submitted.}
 }
 \author{
 Wim Van der Elst, Geert Molenberghs, Ralf-Dieter Hilgers, & Nicole Heussen
