@@ -24,7 +24,7 @@ Fract.Poly(Covariate, Outcome, S=c(-2,-1,-0.5,0,0.5,1,2,3), Max.M=5, Dataset)
 \item{Results.M5}{The results (powers and AIC values) of the fractional polynomials of order \eqn{5}.}
 }
 \references{
-Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Correlation in continuous monitoring of vital parameters - estimating reliability using linear mixed-effects models. \emph{Submitted.}
+Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Estimating the reliability of repeatedly measured endpoints based on linear mixed-effects models. A tutorial. \emph{Submitted.}
 }
 \author{
 Wim Van der Elst, Geert Molenberghs, Ralf-Dieter Hilgers, & Nicole Heussen

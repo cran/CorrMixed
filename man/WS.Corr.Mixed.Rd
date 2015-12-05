@@ -12,7 +12,7 @@ Number.Bootstrap=100, Alpha=.05, Seed=1)
 }
 \arguments{
   \item{Dataset}{A \code{data.frame} that should consist of multiple lines per subject ('long' format).}
-  \item{Fixed.Part}{The outcome and fixed-effect part of the mixed-effects model to be fitted. The model should be specified in agreement with the \code{lme} function requirements of the \code{nlme} package (see \url{http://cran.r-project.org/web/packages/nlme/index.html}). See \bold{examples} below.}
+  \item{Fixed.Part}{The outcome and fixed-effect part of the mixed-effects model to be fitted. The model should be specified in agreement with the \code{lme} function requirements of the \code{nlme} package. See \bold{examples} below.}
   \item{Random.Part}{The random-effect part of the mixed-effects model to be fitted (specified in line with the \code{lme} function requirements). See \bold{examples} below.}
   \item{Correlation}{An optional object describing the within-group correlation structure (specified in line with the \code{lme} function requirements). See \bold{examples} below.} 
   \item{Id}{The subject indicator.}
@@ -59,7 +59,7 @@ not like e.g.,
 \item{Time}{The time values in the dataset.}
 }
 \references{
-Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Correlation in continuous monitoring of vital parameters - estimating reliability using linear mixed-effects models. \emph{Submitted.}
+Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Estimating the reliability of repeatedly measured endpoints based on linear mixed-effects models. A tutorial. \emph{Submitted.}
 }
 \author{
 Wim Van der Elst, Geert Molenberghs, Ralf-Dieter Hilgers, & Nicole Heussen

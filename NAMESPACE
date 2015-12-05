@@ -6,6 +6,37 @@ exportPattern("^[[:alpha:]]+")
 export(plot.Explore.WS.Corr, plot.WS.Corr.Mixed, plot.WS.Corr.Mixed.SAS, summary.Explore.WS.Corr, summary.Fract.Poly, 
 summary.WS.Corr.Mixed, summary.WS.Corr.Mixed.SAS)
 
+
+# Imported functions
+importFrom("stats", na.exclude)
+importFrom("stats", reshape)
+importFrom("stats", var)
+importFrom("stats", lm)
+importFrom("stats", residuals)
+importFrom("stats", qnorm)
+importFrom("stats", cor)
+importFrom("stats", coef)
+importFrom("stats", median)
+importFrom("stats", gaussian)
+importFrom("stats", logLik)
+importFrom("stats", qchisq)
+importFrom("stats", runif)
+importFrom("stats", density)
+importFrom("stats", sd)
+importFrom("stats", cov2cor)
+importFrom("stats", glm)
+importFrom("stats", rbinom)
+importFrom("stats", qt)
+importFrom("stats", vcov)
+importFrom("stats", ecdf)
+importFrom("stats", quantile)
+importFrom("stats", "binomial")
+
+importFrom("graphics", "lines", "plot", "points", "polygon")
+importFrom("stats", "extractAIC", "formula", "lowess", "na.omit", "pchisq")
+
+
+
 S3method(plot, Explore.WS.Corr)
 S3method(plot, WS.Corr.Mixed)
 S3method(plot, WS.Corr.Mixed.SAS)

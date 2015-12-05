@@ -4,7 +4,7 @@
 Plot a heatmap of the correlation structure 
 }
 \description{
-This function plots a heatmap of the correlation structure (reliability) in the data. It is a wrapper function for the \code{cor.plot} function of the \code{psych} package (for details see \url{http://cran.r-project.org/web/packages/psych/index.html}).}
+This function plots a heatmap of the correlation structure (reliability) in the data. It is a wrapper function for the \code{cor.plot} function of the \code{psych} package.}
 \usage{
 Heatmap(Dataset, Id, Outcome, Time, ...)
 }
@@ -16,7 +16,7 @@ Heatmap(Dataset, Id, Outcome, Time, ...)
   \item{...}{Other arguments to be passed to \code{cor.plot}.}
 }
 \references{
-Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Correlation in continuous monitoring of vital parameters - estimating reliability using linear mixed-effects models. \emph{Submitted.}
+Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Estimating the reliability of repeatedly measured endpoints based on linear mixed-effects models. A tutorial. \emph{Submitted.}
 }
 \author{
 Wim Van der Elst, Geert Molenberghs, Ralf-Dieter Hilgers, & Nicole Heussen
