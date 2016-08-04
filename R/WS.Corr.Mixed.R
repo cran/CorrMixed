@@ -352,7 +352,7 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
     list(Model=Model, D=D, Tau2=Tau2, Rho=Rho, Sigma2=Sigma2, AIC=AIC, LogLik=LogLik, 
          R=R, CI.Upper=CI.Upper, CI.Lower=CI.Lower, Alpha=Alpha, 
          Coef.Fixed=Coef.Fixed, Std.Error.Fixed=Std.Error.Fixed,
-         Time=unique(Time), Call=match.call())   
+         Time=unique(Time), Fitted.Model=model, Call=match.call())   
   
   class(fit) <- "WS.Corr.Mixed"
   fit

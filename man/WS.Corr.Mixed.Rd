@@ -57,6 +57,7 @@ not like e.g.,
 \item{Coef.Fixed}{The estimated fixed-effect parameters.}
 \item{Std.Error.Fixed}{The standard errors of the fixed-effect parameters.}
 \item{Time}{The time values in the dataset.}
+\item{Fitted.Model}{A fitted model of class \code{lme}.}
 }
 \references{
 Van der Elst, W., Molenberghs, G., Hilgers, R., & Heussen, N. (2015). Estimating the reliability of repeatedly measured endpoints based on linear mixed-effects models. A tutorial. \emph{Submitted.}

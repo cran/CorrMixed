@@ -1,4 +1,4 @@
-fafb05c73cc639fd1f1c55fcad8880fd *DESCRIPTION
+2529b117c6e0db7035d5867adef9d9b2 *DESCRIPTION
 135c22b1beec10c8d4f744cf786fd382 *NAMESPACE
 c649131c480c1975b18a276bc55199ab *NEWS
 f125ce86d4aca9f814f526bac5ab7761 *R/Explore.WS.Corr.R
@@ -6,7 +6,7 @@ f125ce86d4aca9f814f526bac5ab7761 *R/Explore.WS.Corr.R
 ec894a2f30ae50a010d0d32f9e67b725 *R/Heatmap.R
 c9b7677fe0f8160515aaec7de7424397 *R/Model.Fit.R
 98aa83324a506acdbfcc333ebd3b7c86 *R/Spaghetti.Plot.R
-f44fc349433dadafd59ee793cbd8500d *R/WS.Corr.Mixed.R
+3193c301c730e37d15a41addc3c55b6a *R/WS.Corr.Mixed.R
 25501f13c338b398fd1bab207b8c6908 *R/WS.Corr.Mixed.SAS.R
 e38854921b7e832b1c7b41649841bc22 *R/plot.Explore.WS.Corr.R
 ba24b17fa877ef7ff513d0a1cb5b795d *R/plot.WS.Corr.Mixed.R
@@ -21,7 +21,7 @@ e85aa7c0a7b4f095c5c4e3879140a0be *man/Fract.Poly.Rd
 80ce1ff56f3b13a45c523493302a4e34 *man/Heatmap.Rd
 0cf083286baf7251a89413c0a7e81db0 *man/Model.Fit.Rd
 b9cc023f9acd927830bdec72f6688015 *man/Spaghetti.Plot.Rd
-024474f520ff8784a4b8984f1b8b9a67 *man/WS.Corr.Mixed.Rd
+d83ba712a266e7f49984343e4fa0a158 *man/WS.Corr.Mixed.Rd
 c0e3b138d04b36c3f0d2f38605947cfd *man/WS.Corr.Mixed.SAS.Rd
 abcfffe3835a1440e16f3155261498b4 *man/plot.Explore.WS.Corr.Rd
 0d64ed96f3c7b73f0afeb5312101b249 *man/plot.WS.Corr.Mixed.Rd
