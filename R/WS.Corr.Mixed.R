@@ -348,6 +348,152 @@ WS.Corr.Mixed <- function(Dataset, Fixed.Part=" ", Random.Part=" ", Correlation=
     }
   }
 
+  
+  if (Model == 4){ 
+    
+    Tau2 <- Rho <- NULL
+    
+    Model = "Model 4, Random intercept and slope"
+    
+    model <- lme(fixed = Fixed.Part, random = Random.Part,  
+                 data = Dataset, na.action = na.omit)
+    Coef.Fixed <- model$coefficients$fixed
+    Std.Error.Fixed <- sqrt(diag(model$varFix))
+    
+    D <- matrix(nlme::getVarCov(model)[1:4], nrow=2)
+    Sigma2  <- sigma2 <- as.numeric(summary(model)[6]) **2   
+    AIC <- summary(model)$AIC
+    LogLik <- summary(model)$logLik
+    
+    # corrs 
+    Time <- unique(Time) #LS
+    Time <- sort(Time)
+    all_cols <- NULL
+    for (i in 1: length(Time)){
+      t1 <- Time[i]
+      R_all <- NULL
+      
+      for (j in 1: length(Time)){
+        t2 <- Time[j]
+        u <- t2 - t1
+        z_s <- matrix(data = c(1, t1), nrow = 1)
+        z_t <- matrix(data = c(1, t2), nrow = 1)
+        
+        R <- ((z_s %*% D %*% t(z_t))) /
+          (sqrt(z_s %*% D %*% t(z_s) + sigma2) * sqrt(z_t %*% D %*% t(z_t) + sigma2)) 
+        
+        R_all <- c(R_all, R)
+      }
+      all_cols <- cbind(all_cols, t(t(R_all)))
+    }
+    
+    R <- Correlatie_matrix <- all_cols
+    
+    Correlatie_matrix <- 
+      matrix(Correlatie_matrix, nrow = dim(Correlatie_matrix)[1])
+    
+    alles <- NULL
+    for (i in 1: length(Time)-1){
+      cor_hier <- Correlatie_matrix[row(Correlatie_matrix) == (col(Correlatie_matrix) - i)]
+      erbij <- cbind(i, cor_hier)    
+      alles <- rbind(alles, erbij)
+      rm(erbij)
+    } 
+    
+    # bootstrap
+    if (Number.Bootstrap>0){
+      all_y <- R
+      Dataset <- cbind(Dataset, Dataset[, Id]) 
+      colnames(Dataset[dim(Dataset)[2]]) <- c("Id_name")
+      
+      all_boot_R <- NULL
+      val_sol <- 1 
+      for (i in 1: Number.Bootstrap){
+        set.seed(Seed+i)
+        boot <- 
+          sample(unique(Dataset[,colnames(Dataset)%in%Id]), 
+                 size = length(unique(Dataset[,colnames(Dataset)%in%Id])), replace = T)
+        
+        sample.boot <- NULL
+        for (j in 1: length(boot)){
+          Dataset <- data.frame(Dataset)
+          samen <- 
+            Dataset[Dataset[dim(Dataset)[2]]==boot[j], ]
+          unit <- rep(j, dim(samen)[1])
+          samen <- cbind(samen, unit)
+          sample.boot <- rbind(sample.boot, samen) 
+        }
+        sample.boot <- 
+          sample.boot[, 1: (dim(sample.boot)[2])]  
+        
+        p_1 <- sub(pattern = Id, replacement = "unit", x = Random.Part)[1]
+        p_2 <- sub(pattern = Id, replacement = "unit", x = Random.Part)[2]
+        
+        try(model_hier <- lme(fixed = Fixed.Part, random = formula(paste(p_1, p_2)), 
+                            #  correlation = Correlation, 
+                              data = sample.boot, na.action = na.omit), silent=TRUE)
+        
+        if (exists("model_hier")==TRUE){
+          
+          D_hier <- 
+            matrix(nlme::getVarCov(model_hier)[1:4], nrow=2)
+          sigma2_var_hier <- as.numeric(summary(model_hier)[6]) **2   
+          all_cols <- NULL
+          for (im in 1: length(Time)){
+            t1 <- Time[im]
+            R_all <- NULL
+            
+            for (j in 1: length(Time)){
+              t2 <- Time[j]
+              u <- t2 - t1
+              z_s <- matrix(data = c(1, t1), nrow = 1)
+              z_t <- matrix(data = c(1, t2), nrow = 1)
+              
+              R_hier <- ((z_s %*% D_hier %*% t(z_t))) /
+                (sqrt(z_s %*% D_hier %*% t(z_s) + sigma2_var_hier) * sqrt(z_t %*% D_hier %*% t(z_t) + sigma2_var_hier)) 
+              
+              R_all <- c(R_all, R_hier)
+            }
+            all_cols <- cbind(all_cols, t(t(R_all)))
+          }
+          all_cols <- cbind(t(t(rep(i, times=dim(all_cols)[1]))), all_cols)
+          all_boot_R <- rbind(all_boot_R, all_cols)
+          
+          rm(model_hier)  
+        }    
+      }  # einde bootstrap
+      
+      all_upper <- all_lower <- diag(nrow=dim(Correlatie_matrix)[1]) #LS
+      for (k in 1: (dim(all_boot_R)[2]-1)){
+        for (m in 1: (dim(Correlatie_matrix)[1])){
+          r_rowcol <- NULL
+          for (s in 1: Number.Bootstrap){
+            try(rm(r_rowcol_val), silent=TRUE)
+            dat_hier <- 
+              all_boot_R[all_boot_R[,1]==s,]
+            try(r_rowcol_val <- dat_hier[m,(k+1)], silent=TRUE)
+            if (exists("r_rowcol_val")){
+              r_rowcol <- (cbind(r_rowcol, r_rowcol_val))
+            }
+          }
+          upper <- quantile(r_rowcol, probs = c(1-(Alpha/2)), na.rm = T)
+          lower <- quantile(r_rowcol, probs = c(Alpha/2), na.rm = T)
+          try(all_upper[m,k] <- upper, silent=TRUE)
+          try(all_lower[m,k] <- lower, silent=TRUE)
+        }
+      }
+      
+      CI.Upper <- all_upper
+      CI.Lower <- all_lower  
+    }
+    
+    if (Number.Bootstrap==0){
+      CI.Upper <- NULL
+      CI.Lower <- NULL
+    }
+  }
+  
+  
   fit <- 
     list(Model=Model, D=D, Tau2=Tau2, Rho=Rho, Sigma2=Sigma2, AIC=AIC, LogLik=LogLik, 
          R=R, CI.Upper=CI.Upper, CI.Lower=CI.Lower, Alpha=Alpha, 

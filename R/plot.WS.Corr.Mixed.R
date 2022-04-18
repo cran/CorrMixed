@@ -68,4 +68,19 @@ if (x$Model=="Model 3") {
     
 }
 
+    
+    
+    if (x$Model=="Model 4, Random intercept and slope") {
+      
+      if (missing(xlab)) {xlab="Measurement moment"}
+      if (missing(main)) {main="Model 4"}
+      plot(x=x$Time, y=x$R[,1], 
+           col=0, ylim=ylim, ylab=ylab, 
+           xlab=xlab, main=main, ...)
+      aantal <- dim(x$R)[2]
+      for (i in 1: aantal){
+        lines(y=x$R[,i][(i) : (aantal)], x=x$Time[(i) : (aantal)], col="grey")
+      }
+    }
+    
 }

@@ -17,7 +17,7 @@ Number.Bootstrap=100, Alpha=.05, Seed=1)
   \item{Correlation}{An optional object describing the within-group correlation structure (specified in line with the \code{lme} function requirements). See \bold{examples} below.} 
   \item{Id}{The subject indicator.}
   \item{Time}{The time indicator. Default \code{Time=Time}.}
-  \item{Model}{The type of model that should be fitted. \code{Model=1}: random intercept model, \code{Model=2}: random intercept and Gaussian serial correlation, and \code{Model=3}: random intercept,  slope, and Gaussian serial correlation. Default \code{Model=1}.}
+  \item{Model}{The type of model that should be fitted. \code{Model=1}: random intercept model, \code{Model=2}: random intercept and Gaussian serial correlation, \code{Model=3}: random intercept,  slope, and Gaussian serial correlation, and  \code{Model=4}: random intercept + slope. Default \code{Model=1}.}
    \item{Number.Bootstrap}{The number of bootstrap samples to be used to estimate the Confidence Intervals around \eqn{R}.  Default \code{Number.Bootstrap=100}. As an alternative to obtain confidence intervals, the Delta method can be used (see \link{WS.Corr.Mixed.SAS}). }
    \item{Alpha}{The \eqn{\alpha}-level to be used in the bootstrap-based Confidence Interval for \eqn{R}. Default \eqn{Alpha=0.05}} 
 \item{Seed}{The seed to be used in the bootstrap. Default \eqn{Seed=1}.}

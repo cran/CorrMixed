@@ -72,4 +72,29 @@ summary.WS.Corr.Mixed <- function(object, ..., Object){
     cat("LogLik: ", Object$LogLik)
     cat("\nAIC: ", Object$AIC)
   }
-}
+
+  if (Object$Model=="Model 4, Random intercept and slope"){
+    cat(Object$Model, "\n")    
+    cat("===================================\n\n")
+    cat("Fitted variance components: \n")
+    cat("--------------------------- \n")
+    cat("D:\n")
+    print(Object$D)
+    cat("\nSigma**2:", Object$Sigma2, "\n")
+    cat("\nEstimated correlations R at each time point r(time_j, time_k) \n")
+    cat("------------------------------------------------------------- \n")  
+    print(Object$R)
+    cat("\n", (1-Object$Alpha)*100, "% confidence intervals (bootstrap), lower bounds:\n", sep="")
+    cat("--------------------------------------------------- \n") 
+    print(Object$CI.Lower)
+    cat("\n", (1-Object$Alpha)*100, "% confidence intervals (bootstrap), upper bounds:\n", sep="")
+    cat("--------------------------------------------------- \n") 
+    print(Object$CI.Upper)
+    cat("\n\nModel fit: \n")
+    cat("---------- \n")  
+    cat("LogLik: ", Object$LogLik)
+    cat("\nAIC: ", Object$AIC)
+  }
+  
+  
+  }
